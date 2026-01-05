@@ -7,13 +7,14 @@
   
   <a href="https://vostok-trade.onrender.com">
     <img src="https://img.shields.io/badge/🔴_LIVE_DEMO-Смотреть_онлайн-red?style=for-the-badge&logo=vercel" height="35" />
+    
   </a>
-</div>
-
-
+  
 ![Project Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 ![Deploy](https://img.shields.io/badge/Deploy-Render-black?style=for-the-badge)
+</div>
+
 
 ---
 
