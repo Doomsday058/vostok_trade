@@ -3,9 +3,11 @@
 <div align="center">
   <img src="./assets/screen.png" alt="Скриншот проекта Vostok Trade" width="100%" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
   <br>
-![Project Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
-![Deploy](https://img.shields.io/badge/Deploy-Render-black?style=for-the-badge)
+
+  ![Project Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+  ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+  ![Deploy](https://img.shields.io/badge/Deploy-Render-black?style=for-the-badge)
+  
   <h3>Современная B2B платформа для дистрибуции напитков</h3>
   
   <a href="https://vostok-trade.onrender.com">
