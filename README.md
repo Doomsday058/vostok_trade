@@ -9,7 +9,7 @@
   <br>
   <h3>Современная B2B платформа для дистрибуции напитков</h3>
   
-  <a href="https://vostok-trade.onrender.com" target="_blank" rel="noopener noreferrer">
+  <a href="https://vostok-trade.onrender.com">
     <img src="https://img.shields.io/badge/🔴_LIVE_DEMO-Смотреть_онлайн-red?style=for-the-badge&logo=vercel" height="35" />
   </a>
 </div>
