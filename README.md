@@ -1,5 +1,3 @@
-# 🚀 VOSTOK TRADE COMPANY
-
 <div align="center">
   <img src="./assets/screen.png" alt="Скриншот проекта Vostok Trade" width="100%" style="border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
   <br>
