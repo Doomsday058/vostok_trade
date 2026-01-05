@@ -1,202 +1,122 @@
-// app/account/page.tsx
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUser } from '../components/UserContext';
-import { FaUserCircle, FaEnvelope, FaBuilding, FaHistory, FaSpinner } from 'react-icons/fa';
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-type PriceRequest = {
-  _id: string;
-  requestDate: string;
-  status: string;
-};
+import { useUser } from '@/context/UserContext';
+import api from '@/lib/api';
+import { FaUserCircle, FaHistory, FaSpinner, FaUpload } from 'react-icons/fa';
 
 export default function AccountPage() {
-  const { user, logout } = useUser();
+  const { user, logout, loading: authLoading } = useUser();
   const router = useRouter();
-  const [priceRequests, setPriceRequests] = useState<PriceRequest[]>([]);
+  const [requests, setRequests] = useState<any[]>([]); 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  
-  useEffect(() => {
-    // Если пользователь не авторизован, перенаправляем на главную
-    if (!user) {
-      router.push('/');
-      return;
-    }
+  const [uploading, setUploading] = useState(false);
 
-    // Загружаем историю запросов прайс-листов
-    const fetchPriceRequests = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          throw new Error('Не найден токен авторизации');
-        }
-        
-        const response = await fetch(`${apiUrl}/api/price-requests`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Ошибка при загрузке истории запросов');
-        }
-        
-        const data = await response.json();
-        setPriceRequests(data);
-      } catch (err) {
-        console.error('Error fetching price requests:', err);
-        setError(err instanceof Error ? err.message : 'Неизвестная ошибка');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchPriceRequests();
-  }, [user, router]);
-  
-  if (!user) return null;
-  
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-  
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'sent': return 'Отправлен';
-      case 'pending': return 'В обработке';
-      case 'failed': return 'Ошибка';
-      default: return status;
+  useEffect(() => {
+    if (!authLoading && !user) router.push('/');
+    if (user) {
+      api.get('/price-requests')
+        .then(res => {
+            if (Array.isArray(res.data)) {
+                setRequests(res.data);
+            } else {
+                setRequests([]);
+            }
+        })
+        .catch(err => console.error(err))
+        .finally(() => setLoading(false));
+    }
+  }, [user, authLoading, router]);
+
+  const handleUploadPrice = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.[0]) return;
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+
+    try {
+      await api.post('/upload-price', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      alert('Прайс-лист успешно обновлен!');
+    } catch (err) {
+      console.error(err);
+      alert('Ошибка загрузки файла');
+    } finally {
+      setUploading(false);
+      e.target.value = '';
     }
   };
-  
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'sent': return 'bg-green-900 text-green-300';
-      case 'pending': return 'bg-yellow-900 text-yellow-300';
-      case 'failed': return 'bg-red-900 text-red-300';
-      default: return 'bg-gray-900 text-gray-300';
-    }
-  };
-  
+
+  if (authLoading || !user) return <div className="h-screen flex items-center justify-center"><FaSpinner className="animate-spin text-blue-500" size={40} /></div>;
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white pt-24 pb-8">
-      <div className="max-w-5xl mx-auto px-4">
-        <h1 className="text-3xl font-russo mb-8">Личный кабинет</h1>
+    <div className="min-h-screen bg-gray-900 text-white pt-24 pb-12 px-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-russo mb-10 text-center md:text-left">Личный кабинет</h1>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Информация о пользователе */}
-          <div className="col-span-1 bg-gray-800 rounded-lg p-6 shadow-lg">
-            <div className="text-center mb-6">
-              <FaUserCircle size={80} className="mx-auto text-blue-400 mb-4" />
-              <h2 className="text-xl font-semibold">{user.companyName || 'Личный аккаунт'}</h2>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <FaEnvelope className="mr-3 text-blue-400" />
-                <div>
-                  <p className="text-sm text-gray-400">Email</p>
-                  <p>{user.email}</p>
-                </div>
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="space-y-6">
+            <div className="bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-xl">
+              <FaUserCircle size={80} className="mx-auto text-blue-500 mb-4" />
+              <div className="text-center mb-8">
+                <h2 className="text-xl font-bold">{user.companyName || 'Клиент'}</h2>
+                <p className="text-gray-400 text-sm">{user.role === 'admin' ? 'Администратор' : 'Партнер'}</p>
               </div>
               
-              {user.companyName && (
-                <div className="flex items-center">
-                  <FaBuilding className="mr-3 text-blue-400" />
-                  <div>
-                    <p className="text-sm text-gray-400">Компания</p>
-                    <p>{user.companyName}</p>
-                  </div>
+              <div className="space-y-4 text-sm">
+                <div className="flex justify-between border-b border-gray-700 pb-2">
+                  <span className="text-gray-400">Email:</span>
+                  <span>{user.email}</span>
                 </div>
-              )}
-              
-              <div className="flex items-center">
-                <FaUserCircle className="mr-3 text-blue-400" />
-                <div>
-                  <p className="text-sm text-gray-400">Тип аккаунта</p>
-                  <p>{user.userType === 'business' ? 'Юридическое лицо' : 'Физическое лицо'}</p>
+                <div className="flex justify-between border-b border-gray-700 pb-2">
+                  <span className="text-gray-400">Тип:</span>
+                  <span>{user.userType === 'business' ? 'Юр. лицо' : 'Физ. лицо'}</span>
                 </div>
               </div>
-            </div>
-            
-            <div className="mt-8">
-              <button 
-                onClick={logout} 
-                className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-              >
-                Выйти из аккаунта
+
+              <button onClick={logout} className="w-full mt-8 py-3 bg-gray-700 hover:bg-red-600 transition-colors rounded-xl font-bold">
+                Выйти
               </button>
             </div>
+
+            {user.role === 'admin' && (
+              <div className="bg-blue-900/20 border border-blue-500/30 p-6 rounded-2xl">
+                <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                  <FaUpload className="text-blue-400" /> Обновить прайс
+                </h3>
+                <label className="block w-full text-center py-3 border-2 border-dashed border-blue-500/50 rounded-xl cursor-pointer hover:bg-blue-500/10 transition-all">
+                  <span className="text-sm font-medium">{uploading ? 'Загрузка...' : 'Выбрать Excel файл'}</span>
+                  <input type="file" accept=".xlsx" className="hidden" onChange={handleUploadPrice} disabled={uploading} />
+                </label>
+              </div>
+            )}
           </div>
-          
-          {/* История запросов */}
-          <div className="col-span-1 md:col-span-2 bg-gray-800 rounded-lg p-6 shadow-lg">
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
-              <FaHistory className="mr-2 text-blue-400" />
-              История запросов прайс-листа
+
+          <div className="lg:col-span-2 bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-xl">
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-3">
+              <FaHistory className="text-blue-500" /> История запросов
             </h2>
             
             {loading ? (
-              <div className="text-center py-8 text-gray-400">
-                <FaSpinner className="animate-spin mx-auto mb-2 text-blue-400" size={24} />
-                <p>Загрузка истории запросов...</p>
-              </div>
-            ) : error ? (
-              <div className="text-center py-8 text-red-400">
-                <p>{error}</p>
-                <button 
-                  onClick={() => {setLoading(true); window.location.reload()}}
-                  className="mt-4 text-blue-400 hover:text-blue-300"
-                >
-                  Попробовать снова
-                </button>
-              </div>
-            ) : priceRequests.length === 0 ? (
-              <p className="text-center py-8 text-gray-400">У вас еще нет запросов прайс-листов</p>
+              <div className="py-20 text-center opacity-50"><FaSpinner className="animate-spin mx-auto mb-4" /></div>
+            ) : requests.length === 0 ? (
+              <div className="py-20 text-center text-gray-500">Запросов пока не было</div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="py-2 px-4 text-left">Дата запроса</th>
-                      <th className="py-2 px-4 text-left">Статус</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {priceRequests.map((request) => (
-                      <tr key={request._id} className="border-b border-gray-700">
-                        <td className="py-3 px-4">
-                          {formatDate(request.requestDate)}
-                        </td>
-                        <td className="py-3 px-4">
-                          <span className={`inline-block px-2 py-1 rounded-full ${getStatusColor(request.status)} text-xs`}>
-                            {getStatusText(request.status)}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="space-y-4">
+                {requests.map((req: any) => (
+                  <div key={req._id} className="flex items-center justify-between p-4 bg-gray-900/50 rounded-xl border border-gray-700">
+                    <div>
+                        <p className="font-bold">{new Date(req.createdAt).toLocaleDateString('ru-RU')}</p>
+                        <p className="text-xs text-gray-500">{new Date(req.createdAt).toLocaleTimeString()}</p>
+                    </div>
+                    <span className={`px-4 py-1 rounded-full text-xs font-bold ${req.status === 'sent' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                      {req.status === 'sent' ? 'ОТПРАВЛЕН' : 'ОШИБКА'}
+                    </span>
+                  </div>
+                ))}
               </div>
             )}
-            
-            <div className="mt-6">
-              <button 
-                onClick={() => router.push('/#price-request')} 
-                className="py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-              >
-                Запросить новый прайс-лист
-              </button>
-            </div>
           </div>
         </div>
       </div>

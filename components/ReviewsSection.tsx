@@ -17,22 +17,18 @@ export default function ReviewsSection() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   
-  // Проверка размера экрана для определения мобильной версии
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     
-    // Проверяем при загрузке
     checkIfMobile();
     
-    // Добавляем слушатель изменения размера окна
     window.addEventListener('resize', checkIfMobile);
     
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
-  
-  // Автоматическое переключение отзывов
+
   useEffect(() => {
     if (isPaused) {
       if (timerRef.current) {
@@ -87,8 +83,7 @@ export default function ReviewsSection() {
     >
       <div className="max-w-7xl mx-auto px-4 text-center text-white">
         <h2 className="text-4xl font-russo mb-8">Что говорят наши клиенты</h2>
-        
-        {/* Контейнер отзывов */}
+
         <div className="relative overflow-hidden px-4 md:px-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {visibleReviews.map((review, idx) => (
@@ -114,7 +109,6 @@ export default function ReviewsSection() {
             ))}
           </div>
           
-          {/* Навигационные кнопки */}
           <div className="md:hidden flex justify-center mt-6 space-x-4">
             <button 
               onClick={goToPrev} 
@@ -150,7 +144,6 @@ export default function ReviewsSection() {
           </button>
         </div>
         
-        {/* Индикаторы страниц */}
         <div className="flex justify-center mt-8 space-x-2">
           {reviews.map((_, index) => (
             <button

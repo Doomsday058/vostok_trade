@@ -1,23 +1,18 @@
 @import "tailwindcss";
 @import 'aos/dist/aos.css';
 
-/* Включаем плавную прокрутку */
 html {
   scroll-behavior: smooth;
 }
 
-/* Подключаем шрифты */
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
-/* Общие стили */
 body {
   font-family: 'Montserrat', sans-serif;
   color: #fff;
-  background-color: #111827; /* темно-серый, почти черный */
+  background-color: #111827; 
 }
-
-/* Пользовательский класс для фирменного шрифта */
 .font-russo {
   font-family: 'Russo One', sans-serif;
 }
@@ -26,31 +21,27 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Плавные переходы */
 a, button {
   transition: all 0.3s ease;
 }
 
-/* Фон для всех секций */
 .common-bg-section {
   background-image: url('/hero-bg.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;  /* Эффект параллакса */
+  background-attachment: fixed; 
   position: relative;
   isolation: isolate;
 }
 
-/* Затемнение для секций */
 .common-bg-section::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75); /* Более сильное затемнение для темного стиля */
+  background: rgba(0, 0, 0, 0.75); 
   z-index: -1;
 }
 
-/* Улучшенные стили для кнопок */
 button, 
 .btn {
   position: relative;
@@ -77,7 +68,6 @@ button:hover::after,
   height: 300%;
 }
 
-/* Плавное появление элементов */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -89,7 +79,6 @@ button:hover::after,
   transform: translateY(0);
 }
 
-/* Улучшенные стили для скроллбара */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -99,7 +88,7 @@ button:hover::after,
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6; /* Голубой цвет */
+  background: #3b82f6; 
   border-radius: 5px;
 }
 
@@ -107,7 +96,6 @@ button:hover::after,
   background: #2563eb;
 }
 
-/* Стили для слайдера отзывов */
 .slider-container {
   overflow: hidden;
   position: relative;
@@ -122,22 +110,18 @@ button:hover::after,
   flex: 0 0 100%;
 }
 
-/* Затемнение градиента для карточек */
 .card-gradient {
   background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
 }
 
-/* Стили для модальных окон */
 .modal-overlay {
   backdrop-filter: blur(8px);
 }
 
-/* Кастомные тени */
 .blue-glow {
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
 }
 
-/* Стили для анимированных элементов */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -147,7 +131,6 @@ button:hover::after,
   animation: fadeIn 0.6s ease forwards;
 }
 
-/* Кастомные стили для форм */
 input, select, textarea {
   font-family: 'Montserrat', sans-serif;
 }

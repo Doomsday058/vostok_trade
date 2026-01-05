@@ -5,7 +5,6 @@ export default function ContactSection() {
   return (
     <section id="contact" className="py-20 common-bg-section">
       <div className="max-w-6xl mx-auto px-4 text-white">
-        {/* Заголовок секции */}
         <div className="text-center mb-12">
           <h2 className="text-4xl font-russo mb-4" data-aos="fade-up">Свяжитесь с нами</h2>
           <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full" data-aos="zoom-in" data-aos-delay="200"></div>
@@ -15,7 +14,6 @@ export default function ContactSection() {
         </div>
         
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Контактная информация - оставляем без изменений */}
           <div className="lg:w-1/2" data-aos="fade-right">
             <div className="bg-gray-900/80 backdrop-blur p-6 rounded-lg border border-gray-800 shadow-lg h-full">
               <h3 className="text-2xl font-russo mb-6 text-blue-400">Контактная информация</h3>
@@ -104,7 +102,6 @@ export default function ContactSection() {
             </div>
           </div>
           
-          {/* Карта - улучшена */}
           <div className="lg:w-1/2" data-aos="fade-left">
             <div className="w-full h-full overflow-hidden rounded-lg shadow-lg border border-gray-800">
               <iframe

@@ -3,11 +3,9 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-b from-gray-900 to-black text-white">
-      {/* Основная часть футера */}
       <div className="py-12 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Колонка о компании */}
             <div>
               <div className="mb-6">
                 <Link href="/" className="inline-block">
@@ -20,21 +18,21 @@ export default function Footer() {
               <div className="flex space-x-4">
                 <a 
                   href="#" 
-                  className="bg-gray-800 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+                  className="bg-gray-800 hover:bg-blue-800 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
                   aria-label="Facebook"
                 >
                   <FaFacebook size={18} />
                 </a>
                 <a 
                   href="#" 
-                  className="bg-gray-800 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+                  className="bg-gray-800 hover:bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
                   aria-label="Instagram"
                 >
                   <FaInstagram size={18} />
                 </a>
                 <a 
                   href="https://t.me/vostoktrade" 
-                  className="bg-gray-800 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+                  className="bg-gray-800 hover:bg-blue-300 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
                   aria-label="Telegram"
                 >
                   <FaTelegram size={18} />
@@ -49,7 +47,6 @@ export default function Footer() {
               </div>
             </div>
             
-            {/* Колонка с разделами сайта */}
             <div>
               <h3 className="text-lg font-semibold mb-6 text-white font-russo">Разделы сайта</h3>
               <ul className="space-y-3">
@@ -80,7 +77,6 @@ export default function Footer() {
               </ul>
             </div>
             
-            {/* Колонка с контактами */}
             <div>
               <h3 className="text-lg font-semibold mb-6 text-white font-russo">Контакты</h3>
               <ul className="space-y-4">
@@ -114,8 +110,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            
-            {/* Колонка с рабочими часами */}
+          
             <div>
               <h3 className="text-lg font-semibold mb-6 text-white font-russo">Рабочие часы</h3>
               <ul className="space-y-2">
@@ -143,7 +138,6 @@ export default function Footer() {
         </div>
       </div>
       
-      {/* Нижняя часть футера с копирайтом */}
       <div className="py-6">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-gray-500 mb-4 md:mb-0">
