@@ -35,13 +35,18 @@ export default function AccountPage() {
     formData.append('file', e.target.files[0]);
 
     try {
-      await api.post('/upload-price', formData, {
+      const res = await api.post('/upload-price', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      alert('Прайс-лист успешно обновлен!');
-    } catch (err) {
+      alert(`Каталог обновлён: ${res.data.count} товаров`);
+    } catch (err: any) {
       console.error(err);
-      alert('Ошибка загрузки файла');
+      // Сервер отклоняет файл целиком и называет строки с ошибками — показываем их админу
+      const data = err?.response?.data;
+      const rows = Array.isArray(data?.errors)
+        ? '\n\n' + data.errors.map((e: { row: number; reason: string }) => `Строка ${e.row}: ${e.reason}`).join('\n')
+        : '';
+      alert((data?.message ?? 'Ошибка загрузки файла') + rows);
     } finally {
       setUploading(false);
       e.target.value = '';
