@@ -3,7 +3,6 @@
   <br>
 
   ![Project Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
-  ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
   ![Deploy](https://img.shields.io/badge/Deploy-Render-black?style=for-the-badge)
   
   <h3>Современная B2B платформа для дистрибуции напитков</h3>
